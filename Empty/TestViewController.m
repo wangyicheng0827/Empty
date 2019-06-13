@@ -7,7 +7,7 @@
 //
 
 #import "TestViewController.h"
-
+#import "TestIphoneXViewController.h"
 #import "YCGifView.h"
 #import "YCGifImageView.h"
 
@@ -18,6 +18,9 @@
 
 @property (nonatomic, strong) UIButton *locationBtn;
 @property (nonatomic, strong) UIButton *internetBtn;
+
+/** 测试iphoneX适配 */
+@property (nonatomic, strong) UIButton *testIphoneXAdaptBtn;
 
 @end
 
@@ -32,9 +35,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
-    
     [self configerGifLoading];
-    
+    [self initTestIphoneXAdaptButton];
 }
 
 #pragma mark -- Gif load加载
@@ -127,6 +129,31 @@
     
 }
 
+
+#pragma mark -- iPhone X 适配.
+
+- (void)initTestIphoneXAdaptButton {
+    
+    self.testIphoneXAdaptBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.testIphoneXAdaptBtn setTitle:@"测试iPhone X以上设备适配" forState:UIControlStateNormal];
+    [self.testIphoneXAdaptBtn setTitleColor:[UIColor cyanColor] forState:UIControlStateNormal];
+    self.testIphoneXAdaptBtn.titleLabel.font = [UIFont systemFontOfSize:17.];
+    self.testIphoneXAdaptBtn.layer.masksToBounds = YES;
+    self.testIphoneXAdaptBtn.layer.cornerRadius = 5.0;
+    [self.view addSubview:self.testIphoneXAdaptBtn];
+    [self.testIphoneXAdaptBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view.mas_centerX);
+        make.height.mas_equalTo(30);
+        make.bottom.equalTo(self.view.mas_bottom).offset(-100);
+    }];
+    
+    __weak typeof(self) weakSelf = self;
+    [[self.testIphoneXAdaptBtn rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(id x) {
+        __strong typeof(weakSelf) self = weakSelf;
+        TestIphoneXViewController *iphoneXVC = [[TestIphoneXViewController alloc] init];
+        [self presentViewController:iphoneXVC animated:YES completion:nil];
+    }];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
